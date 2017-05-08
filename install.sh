@@ -13,6 +13,9 @@ sudo sh -c "echo 'export PATH=\$PATH:/usr/local/go/bin' >> ${PROFILE}"
 . ${PROFILE}
 
 sudo apt-get install git
+git config --global core.editor "vim"
+git config --global user.email "lantaol@google.com"
+git config --global user.name "Lantao Liu"
 
 mkdir -p ${HOME}/workspace
 mkdir -p ${HOME}/workspace/bin
