@@ -2,15 +2,19 @@
 set -x
 
 PROFILE=/etc/profile.d/k8s-dev.sh
-GOTAR=go1.7.5.linux-amd64.tar.gz
+GOTAR=go1.8.1.linux-amd64.tar.gz
 
 sudo truncate -s 0 ${PROFILE}
 
+sudo rm -rf /usr/local/go 
 wget https://storage.googleapis.com/golang/${GOTAR} 
 sudo tar -C /usr/local -xzf ${GOTAR}
 rm $GOTAR
 sudo sh -c "echo 'export PATH=\$PATH:/usr/local/go/bin' >> ${PROFILE}"
 . ${PROFILE}
+
+sudo apt-get install gcc
+sudo apt-get install make
 
 sudo apt-get install git
 git config --global core.editor "vim"
