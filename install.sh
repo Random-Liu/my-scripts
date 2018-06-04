@@ -2,7 +2,7 @@
 set -x
 
 PROFILE=/etc/profile.d/k8s-dev.sh
-GOTAR=go1.8.1.linux-amd64.tar.gz
+GOTAR=go1.10.2.linux-amd64.tar.gz
 
 sudo truncate -s 0 ${PROFILE}
 
@@ -13,10 +13,10 @@ rm $GOTAR
 sudo sh -c "echo 'export PATH=\$PATH:/usr/local/go/bin' >> ${PROFILE}"
 . ${PROFILE}
 
-sudo apt-get install gcc
-sudo apt-get install make
+sudo apt-get install -y gcc
+sudo apt-get install -y make
 
-sudo apt-get install git
+sudo apt-get install -y git
 git config --global core.editor "vim"
 git config --global user.email "lantaol@google.com"
 git config --global user.name "Lantao Liu"
@@ -29,7 +29,7 @@ sudo sh -c "echo 'export PATH=\$PATH:\$GOPATH/bin' >> ${PROFILE}"
 . ${PROFILE}
 
 sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates
+sudo apt-get install -y apt-transport-https ca-certificates
 sudo apt-key adv \
                --keyserver hkp://ha.pool.sks-keyservers.net:80 \
                --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
@@ -37,14 +37,14 @@ DOCKER_REPO="deb https://apt.dockerproject.org/repo ubuntu-xenial main"
 echo ${DOCKER_REPO} | sudo tee /etc/apt/sources.list.d/docker.list
 sudo apt-cache policy docker-engine
 sudo apt-get update 
-sudo apt-get install linux-image-extra-$(uname -r) linux-image-extra-virtual
+sudo apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
 sudo apt-get update
-sudo apt-get install docker-engine=1.12.3-0~xenial
+sudo apt-get install -y docker-engine
 sudo groupadd docker
 sudo usermod -aG docker $USER
 
-sudo apt-get install vim
-sudo apt-get install exuberant-ctags
+sudo apt-get install -y vim
+sudo apt-get install -y exuberant-ctags
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 VIMRC="${HOME}/.vimrc"
 cat > $VIMRC <<EOM
@@ -82,10 +82,10 @@ mkdir -p ${GOPATH}/src/k8s.io
 cd ${GOPATH}/src/k8s.io
 git clone https://github.com/kubernetes/kubernetes.git
 
-mkdir -p ${GOPATH}/src/github.com/tools
-cd ${GOPATH}/src/github.com/tools
-git clone https://github.com/tools/godep.git
-cd ${GOPATH}/src/github.com/tools/godep
-git pull
-git checkout v79
-go install
+mkdir -p ${GOPATH}/src/github.com/containerd
+cd ${GOPATH}/src/github.com/containerd
+git clone https://github.com/containerd/containerd.git
+git clone https://github.com/containerd/cri.git
+
+go get github.com/tools/godep
+go get github.com/LK4D4/vndr
